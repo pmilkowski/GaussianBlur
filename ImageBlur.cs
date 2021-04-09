@@ -10,7 +10,7 @@ namespace GaussianBlur
         public ImageBlur(int blur)
         {
             this.Blur = blur;
-            Pascal = PascalRow(Blur * 2 + 1);
+            Pascal = PascalRow(Blur * 2);
             Det = Pascal.Sum();
         }
 
@@ -86,12 +86,10 @@ namespace GaussianBlur
         {
             int n = row_number;
 
-            // Make the results as a list of long.
             List<int> results = new List<int>();
             int value = 1;
             results.Add(value);
 
-            // Calculate the values.
             for (int k = 1; k <= n; k++)
             {
                 value = (value * (n + 1 - k)) / k;
