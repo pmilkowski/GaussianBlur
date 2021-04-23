@@ -4,12 +4,22 @@ namespace GaussianBlur
 {
     public class EdgeFinder
     {
+
+
         int laplacianRadius = 1;
         public Bitmap DetectEdges(string input, string output)
         {
             var image = new Bitmap(input);
             var greyscale = ConvertToGreyscale(image);
             var edges = new Bitmap(image.Width, image.Height);
+
+            var sobelVertical = new[]
+            {
+                new int[] { 1, 0, -1 },
+                new int[] { 2, 0, -2 },
+                new int[] { 1, 0, -1 },
+            };
+
             for (int y = 0; y < image.Height; y += 1)
             {
                 for (int x = 0; x < image.Width; x += 1)
@@ -28,10 +38,7 @@ namespace GaussianBlur
                             if (indexX >= edges.Width) indexX = x - xx;
 
                             var greyPixelValue = greyscale.GetPixel(indexX, indexY).R;
-                            pixelValue += (xx, yy) == (0, 0)
-                                ? greyPixelValue * 8
-                                : greyPixelValue * -1;
-
+                            pixelValue += greyPixelValue * sobelVertical[xx + laplacianRadius][yy + laplacianRadius];
                         }
                     }
 
