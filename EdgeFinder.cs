@@ -15,9 +15,9 @@ namespace GaussianBlur
 
             var sobelVertical = new[]
             {
-                new int[] { 1, 0, -1 },
-                new int[] { 2, 0, -2 },
-                new int[] { 1, 0, -1 },
+                new int[] { 1, 2, 1 },
+                new int[] { 0, 0, 0 },
+                new int[] { -1, -2, -1 },
             };
 
             for (int y = 0; y < image.Height; y += 1)
