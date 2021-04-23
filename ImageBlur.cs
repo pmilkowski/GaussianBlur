@@ -17,7 +17,7 @@ namespace GaussianBlur
         public int Blur { get; private set; }
         public int Det { get; }
         public List<int> Pascal { get; }
-        public void BlurImage(string input, string output)
+        public Bitmap BlurImage(string input, string output)
         {
             var image = new Bitmap(input);
 
@@ -26,6 +26,8 @@ namespace GaussianBlur
             );
 
             blurred.Save(output);
+
+            return blurred;
         }
 
         private Bitmap BlurHorizontally(Bitmap bitmap)
