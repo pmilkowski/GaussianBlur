@@ -62,5 +62,12 @@ new int[] { 0, 1, 1,  2,  2,  2,  1,  1,  0 },
 
             return processed;
         }
+
+        private int NormalizeToColorRange(int number) =>
+            number > 255
+                ? 255
+                : number < 0
+                    ? 0
+                    : number;
     }
 }

@@ -32,7 +32,7 @@ namespace GaussianBlur
             if (!keyValuePairs.ContainsKey("-o"))
             {
                 var outputName = keyValuePairs["-i"].Split('.');
-                keyValuePairs["-o"] = $"{outputName[0]}_greyscale.{outputName[1]}";
+                keyValuePairs["-o"] = $"{outputName[0]}_edges.{outputName[1]}";
             }
 
             return keyValuePairs;
