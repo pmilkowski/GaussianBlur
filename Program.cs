@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace GaussianBlur
 {
     public static class Program
     {
+        private static LaplacianOfGaussian LoG = new LaplacianOfGaussian();
         public static void Main(string[] args)
+        {
+            var keyValuePairs = ParseArgs(args);
+            var image = new Bitmap(keyValuePairs["-i"]);
+            var processed = LoG.Process(image);
+
+            processed.Save(keyValuePairs["-o"]);
+        }
+
+        private static Dictionary<string, string> ParseArgs(string[] args)
         {
             var keyValuePairs = new Dictionary<string, string>();
             while (args.Any())
@@ -24,11 +35,7 @@ namespace GaussianBlur
                 keyValuePairs["-o"] = $"{outputName[0]}_greyscale.{outputName[1]}";
             }
 
-            // var blur = new ImageBlur(5);
-            // blur.BlurImage(keyValuePairs["-i"], keyValuePairs["-o"]);
-
-            var edgeFinder = new EdgeFinder();
-            edgeFinder.DetectEdges(keyValuePairs["-i"], keyValuePairs["-o"]);
+            return keyValuePairs;
         }
     }
 }

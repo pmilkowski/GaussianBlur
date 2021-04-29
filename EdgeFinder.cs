@@ -5,9 +5,8 @@ namespace GaussianBlur
     public class EdgeFinder
     {
         int laplacianRadius = 1;
-        public Bitmap DetectEdges(string input, string output)
+        public Bitmap DetectEdges(Bitmap image)
         {
-            var image = new Bitmap(input);
             var greyscale = ConvertToGreyscale(image);
             var edges = new Bitmap(image.Width, image.Height);
             for (int y = 0; y < image.Height; y += 1)
@@ -44,12 +43,11 @@ namespace GaussianBlur
                     edges.SetPixel(x, y, Color.FromArgb(pixelValue, pixelValue, pixelValue));
                 }
             }
-            edges.Save(output);
 
             return edges;
         }
 
-        private Bitmap ConvertToGreyscale(Bitmap image)
+        public Bitmap ConvertToGreyscale(Bitmap image)
         {
             var greyscale = new Bitmap(image.Width, image.Height);
             for (int y = 0; y < image.Height; y += 1)
