@@ -33,7 +33,7 @@ new int[] { 0, 1, 1,  2,  2,  2,  1,  1,  0 },
             {
                 for (int x = 0; x < image.Width; x += 1)
                 {
-                    int pixelValue = 0;
+                    var (red, green, blue) = (0, 0, 0);
                     for (int yy = -kernelSize; yy < kernelSize; yy += 1)
                     {
                         int indexY = y + yy;
@@ -47,20 +47,26 @@ new int[] { 0, 1, 1,  2,  2,  2,  1,  1,  0 },
                             if (indexX < 0 || indexX >= processed.Width) continue;
                             // if (indexX < 0) indexX = -indexX;
                             // if (indexX >= processed.Width) indexX = x - xx;
+                            var pixel = image.GetPixel(indexX, indexY);
 
-                            pixelValue += greyscale.GetPixel(indexX, indexY).R * -kernel[xx + kernelSize][yy + kernelSize];
+                            red += pixel.R * -kernel[xx + kernelSize][yy + kernelSize];
+                            green += pixel.G * -kernel[xx + kernelSize][yy + kernelSize];
+                            blue += pixel.B * -kernel[xx + kernelSize][yy + kernelSize];
                         }
                     }
-                    pixelValue = pixelValue > 255
-                        ? 255
-                        : pixelValue < 0
-                            ? 0
-                            : pixelValue;
-                    processed.SetPixel(x, y, Color.FromArgb(pixelValue, pixelValue, pixelValue));
+
+                    processed.SetPixel(x, y, Color.FromArgb(Normalize(red), Normalize(green), Normalize(blue)));
                 }
             }
 
             return processed;
         }
+
+        private int Normalize(int number) =>
+        number > 255
+            ? 255
+            : number < 0
+                ? 0
+                : number;
     }
 }
