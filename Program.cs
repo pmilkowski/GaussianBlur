@@ -7,14 +7,34 @@ namespace GaussianBlur
 {
     public static class Program
     {
-        private static LaplacianOfGaussian LoG = new LaplacianOfGaussian();
         public static void Main(string[] args)
         {
             var keyValuePairs = ParseArgs(args);
-            var image = new Bitmap(keyValuePairs["-i"]);
-            var processed = LoG.Process(image);
+            string input = keyValuePairs["-i"];
+            var image = new Bitmap(input);
 
-            processed.Save(keyValuePairs["-o"]);
+            ProcessLoG(image, input);
+            ProcessConvolution(image, input);
+        }
+
+        private static void ProcessConvolution(Bitmap image, string input)
+        {
+            var blur = new ImageBlur(1);
+            var edges = new EdgeFinder();
+            var convolvedImage = edges.DetectEdges(
+                blur.BlurImage(image)
+            );
+            var output = input.Split('.');
+            convolvedImage.Save($"{output[0]}_convolved.{output[1]}");
+        }
+
+        private static void ProcessLoG(Bitmap image, string input)
+        {
+            var log = new LaplacianOfGaussian();
+            var logImage = log.Process(image);
+            var output = input.Split('.');
+
+            logImage.Save($"{output[0]}_log.{output[1]}");
         }
 
         private static Dictionary<string, string> ParseArgs(string[] args)
@@ -32,7 +52,7 @@ namespace GaussianBlur
             if (!keyValuePairs.ContainsKey("-o"))
             {
                 var outputName = keyValuePairs["-i"].Split('.');
-                keyValuePairs["-o"] = $"{outputName[0]}_edges.{outputName[1]}";
+                keyValuePairs["-o"] = $"{outputName[0]}_LoG.{outputName[1]}";
             }
 
             return keyValuePairs;
