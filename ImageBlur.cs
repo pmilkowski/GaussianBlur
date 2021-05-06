@@ -38,8 +38,7 @@ namespace GaussianBlur
                     for (int i = -Blur; i <= Blur; i += 1)
                     {
                         int index = x + i;
-                        if (index < 0) index = -index;
-                        if (index >= bitmap.Width) index = x - i;
+                        if (index < 0 || index >= blurred.Width) continue;
 
                         r += Pascal[i + Blur] * bitmap.GetPixel(index, y).R / Det;
                         g += Pascal[i + Blur] * bitmap.GetPixel(index, y).G / Det;
@@ -65,8 +64,7 @@ namespace GaussianBlur
                     for (int i = -Blur; i < Blur; i += 1)
                     {
                         int index = y + i;
-                        if (index < 0) index = -index;
-                        if (index >= bitmap.Height) index = y - i;
+                        if (index < 0 || index >= blurred.Height) continue;
 
                         r += Pascal[i + Blur] * bitmap.GetPixel(x, index).R / Det;
                         g += Pascal[i + Blur] * bitmap.GetPixel(x, index).G / Det;

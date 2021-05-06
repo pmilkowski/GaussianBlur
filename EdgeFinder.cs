@@ -17,14 +17,12 @@ namespace GaussianBlur
                     for (int yy = -laplacianRadius; yy < laplacianRadius; yy += 1)
                     {
                         int indexY = y + yy;
-                        if (indexY < 0) indexY = -indexY;
-                        if (indexY >= edges.Height) indexY = y - yy;
+                        if (indexY < 0 || indexY >= edges.Height) continue;
 
                         for (int xx = -laplacianRadius; xx < laplacianRadius; xx += 1)
                         {
                             int indexX = x + xx;
-                            if (indexX < 0) indexX = -indexX;
-                            if (indexX >= edges.Width) indexX = x - xx;
+                            if (indexX < 0 || indexX >= edges.Width) continue;
 
                             var greyPixelValue = greyscale.GetPixel(indexX, indexY).R;
                             pixelValue += (xx, yy) == (0, 0)
