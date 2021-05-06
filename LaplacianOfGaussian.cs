@@ -24,11 +24,11 @@ namespace GaussianBlur
                 for (int y = -kernelSize; y < kernelSize; y += 1)
                 {
                     double sumOfSquares = Math.Pow(x, 2) + Math.Pow(y, 2);
-                    double numerator = 1 - sumOfSquares / (2 * Math.Pow(Sigma, 2));
+                    double numerator = sumOfSquares - 2 * Math.Pow(Sigma, 2);
                     double denominator = Math.PI * Math.Pow(Sigma, 4);
                     double exponent = -sumOfSquares / (2 * Math.Pow(Sigma, 2));
 
-                    kernel[x + kernelSize, y + kernelSize] = -numerator / denominator * Math.Pow(Math.E, exponent);
+                    kernel[x + kernelSize, y + kernelSize] = numerator / denominator * Math.Pow(Math.E, exponent);
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace GaussianBlur
                             int indexX = x + xx;
                             if (indexX < 0 || indexX >= processed.Width) continue;
 
-                            pixelValueAsDouble += (double)greyscale.GetPixel(indexX, indexY).R * -kernel[xx + kernelSize, yy + kernelSize];
+                            pixelValueAsDouble += greyscale.GetPixel(indexX, indexY).R * kernel[xx + kernelSize, yy + kernelSize];
                         }
                     }
                     int pixelValue = NormalizeToColorRange(pixelValueAsDouble);
